@@ -1,0 +1,8 @@
+.app {
+  &__frame {
+    margin: 0 auto;
+    width: 900px;
+
+    & > *:not(:last-child) {margin-bottom: 15px}
+  }
+}
