@@ -1,36 +1,43 @@
-export const UPDATE_LIBRARY_REQUEST = 'UPDATE_LIBRARY_REQUEST'
-export const UPDATE_LIBRARY_SUCCESS = 'UPDATE_LIBRARY_SUCCESS'
-export const UPDATE_LIBRARY_FAILURE = 'UPDATE_LIBRARY_FAILURE'
-
+export const UPDATE_REQUEST = 'UPDATE_REQUEST'
+export const UPDATE_SUCCESS = 'UPDATE_SUCCESS'
+export const UPDATE_FAILURE = 'UPDATE_FAILURE'
 export const MANUAL_UPDATE = 'MANUAL_UPDATE'
+export const RESET_ERRORS = 'RESET_ERRORS'
 
-export const updateLibraryRequest = () => {
-    return {
-        type: UPDATE_LIBRARY_REQUEST
-    }
-}
+export const SORT_DIRECTION_CHANGE = 'SORT_DIRECTION_CHANGE'
 
-export const updateLibrarySuccess = (books) => {
-    return {
-        type: UPDATE_LIBRARY_SUCCESS,
-        payload: {
-            books: books
-        }
-    }
-}
+export const updateRequest = () => ({
+    type: UPDATE_REQUEST,
+})
 
-export const updateLibraryFailure = (error, description) => {
-    return {
-        type: UPDATE_LIBRARY_FAILURE,
-        payload: {
-            error: error,
-            description: description
-        }
+export const updateSuccess = (lists, data) => ({
+    type: UPDATE_SUCCESS,
+    payload: {
+        lists: lists,
+        data: data
     }
-}
+})
 
-export const manualUpdate = () => {
-    return {
-        type: MANUAL_UPDATE
+export const updateFailure = (lists, error, description) => ({
+    type: UPDATE_FAILURE,
+    payload: {
+        lists: lists,
+        error: error,
+        description: description
     }
-}
+})
+
+export const manualUpdate = () => ({
+    type: MANUAL_UPDATE,
+})
+
+export const resetErrors = () => ({
+    type: RESET_ERRORS
+})
+
+export const sortDirectionChange = (list) => ({
+    type: SORT_DIRECTION_CHANGE,
+    payload: {
+        list:list
+    }
+})

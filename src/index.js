@@ -10,13 +10,11 @@ import './utils/iconsLibrary'
 import './index.scss'
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <Router>
-                <App />
-            </Router>
-        </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+        <Router>
+            <App />
+        </Router>
+    </Provider>,
     document.getElementById('root')
 );
 

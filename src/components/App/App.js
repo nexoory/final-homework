@@ -1,12 +1,12 @@
-import React, {lazy, Suspense} from 'react'
+import React, {Suspense} from 'react'
 import { Route, Switch, Redirect } from "react-router-dom"
 
 import "./App.scss"
 import Container from "../Container/Container";
-import Header from "../../containers/Header";
 import Status from "../Status/Satatus";
 
-const Library = lazy(() => import("../../containers/Library"))
+import Header from "../../containers/Header";
+import Library from "../../containers/Library"
 
 const App = () => (
     <div className="app">
@@ -14,14 +14,17 @@ const App = () => (
             <Container>
                 <Header/>
             </Container>
-            <Container main={true}>
+            <Container>
                 <Suspense fallback={<Status/>}>
                     <Switch>
-                        <Route exact path="/library" component={Library}/>
-                        <Redirect exact from='/' to='/library'/>
-                        <Route>
+                        <Route exact path="/404">
                             <Status status="notFound"/>
                         </Route>
+                        <Route exact path="/:page">
+                            <Library />
+                        </Route>
+                        <Redirect exact from='/' to='/books'/>
+                        <Redirect to='/404'/>
                     </Switch>
                 </Suspense>
             </Container>

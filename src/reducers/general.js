@@ -1,8 +1,8 @@
 const initialState = {
-    mainMenuLinks: [
-        {title: 'Library', link: "/library"},
-        {title: 'Authors', link: "/authors"},
-        {title: 'Members', link: "/members"},
+    pages: [
+        {title: 'books', link: "/books"},
+        {title: 'authors', link: "/authors"},
+        {title: 'members', link: "/members"},
     ]
 }
 

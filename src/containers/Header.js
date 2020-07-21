@@ -4,6 +4,6 @@ import Header from "../components/Header/Header";
 
 const HeaderContainer = props => <Header links={props.links}/>
 
-const mapStateToProps = (state) => ({links: state.general.mainMenuLinks})
+const mapStateToProps = (state) => ({links: state.general.pages})
 
 export default connect(mapStateToProps)(HeaderContainer)

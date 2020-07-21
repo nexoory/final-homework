@@ -7,11 +7,7 @@ const Container = props => {
     let classes = "container"
     classes += props.customClass ? ` ${props.customClass}` : ''
 
-    if(props.main) {
-        return <main className={classes}>{props.children}</main>
-    } else {
-        return <div className={classes}>{props.children}</div>
-    }
+    return <div className={classes}>{props.children}</div>
 }
 
 Container.Item = props => {
