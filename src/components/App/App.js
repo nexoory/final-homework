@@ -7,6 +7,7 @@ import Status from "../Status/Satatus";
 
 import Header from "../../containers/Header";
 import Library from "../../containers/Library"
+import Detail from "../../containers/Detail";
 
 const App = () => (
     <div className="app">
@@ -22,6 +23,9 @@ const App = () => (
                         </Route>
                         <Route exact path="/:page">
                             <Library />
+                        </Route>
+                        <Route exact path="/:page/:id">
+                            <Detail />
                         </Route>
                         <Redirect exact from='/' to='/books'/>
                         <Redirect to='/404'/>

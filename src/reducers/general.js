@@ -1,8 +1,8 @@
 const initialState = {
     pages: [
-        {title: 'books', link: "/books"},
-        {title: 'authors', link: "/authors"},
-        {title: 'members', link: "/members"},
+        {name: 'books', link: "/books"},
+        {name: 'authors', link: "/authors"},
+        {name: 'members', link: "/members"},
     ]
 }
 

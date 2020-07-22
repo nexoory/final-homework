@@ -5,6 +5,7 @@ export const MANUAL_UPDATE = 'MANUAL_UPDATE'
 export const RESET_ERRORS = 'RESET_ERRORS'
 
 export const SORT_DIRECTION_CHANGE = 'SORT_DIRECTION_CHANGE'
+export const SORT_FIELD_CHANGE = 'SORT_FIELD_CHANGE'
 
 export const updateRequest = () => ({
     type: UPDATE_REQUEST,
@@ -39,5 +40,13 @@ export const sortDirectionChange = (list) => ({
     type: SORT_DIRECTION_CHANGE,
     payload: {
         list:list
+    }
+})
+
+export const sortFieldChange = (list, key) => ({
+    type: SORT_FIELD_CHANGE,
+    payload: {
+        list:list,
+        key: key
     }
 })

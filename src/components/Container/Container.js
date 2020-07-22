@@ -1,6 +1,7 @@
 import React from "react";
-
+import ContaiterItem from "./__item/__item";
 import "./Container.scss"
+
 
 const Container = props => {
 
@@ -10,13 +11,6 @@ const Container = props => {
     return <div className={classes}>{props.children}</div>
 }
 
-Container.Item = props => {
-
-    let classes = "container__item"
-    classes += props.customClass ? ` ${props.customClass}` : ''
-    classes += props.padding ? ` container__item_pad_${props.padding}` : ''
-
-    return <div className={classes}>{props.children}</div>
-}
+Container.Item = ContaiterItem
 
 export default Container

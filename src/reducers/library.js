@@ -4,13 +4,26 @@ import {
     UPDATE_FAILURE,
     MANUAL_UPDATE,
     RESET_ERRORS,
-    SORT_DIRECTION_CHANGE
+    SORT_DIRECTION_CHANGE,
+    SORT_FIELD_CHANGE
 } from "../actions/LibraryActions";
+
+import {getIdToIndex, reverser, sorter} from "../utils/helpers";
 
 const initialState = {
     books: {
         list: null,
         idToIndex: {},
+        sortFields: {
+            id: {
+                title: "Default",
+                type: "int"
+            },
+            title: {
+                title: "Title",
+                type: "string"
+            }
+        },
         options: {
             activeSortField: "id",
             activeSortDirection: "asc",
@@ -19,6 +32,24 @@ const initialState = {
     authors: {
         list: null,
         idToIndex: {},
+        sortFields: {
+            id: {
+                title: "Default",
+                type: "int"
+            },
+            firstName: {
+                title: "First Name",
+                type: "string"
+            },
+            lastName: {
+                title: "Last Name",
+                type: "string"
+            },
+            birthday: {
+                title: "Birthday",
+                type: "date"
+            }
+        },
         options: {
             activeSortField: "id",
             activeSortDirection: "asc",
@@ -27,6 +58,20 @@ const initialState = {
     members: {
         list: null,
         idToIndex: {},
+        sortFields: {
+            id: {
+                title: "Default",
+                type: "int"
+            },
+            firstName: {
+                title: "First Name",
+                type: "string"
+            },
+            lastName: {
+                title: "Last Name",
+                type: "string"
+            }
+        },
         options: {
             activeSortField: "id",
             activeSortDirection: "asc",
@@ -41,37 +86,6 @@ const initialState = {
         error: null,
         description: null
     }
-}
-
-const getIdToIndex = (data) => {
-    const idToIndex = {}
-    for(let i = 0; i<data.length; i++) {
-        idToIndex[data[i].id] = i
-    }
-    return idToIndex
-}
-
-const sorter = (arr, key) => {
-    const result = arr.slice()
-    if(key === 'id') {
-        result.sort((a, b) => {
-            return a.id - b.id;
-        })
-    } else {
-        result.sort((a, b) => {
-            const lcA=a[key].toLowerCase()
-            const lcB=a[key].toLowerCase()
-                if (lcA < lcB) return -1
-                if (lcA > lcB) return 1
-                return 0
-            }
-        )
-    }
-    return result
-}
-
-const reverser = (arr) => {
-    return arr.slice().reverse()
 }
 
 const libraryReducer = (state = initialState, action) => {
@@ -90,6 +104,7 @@ const libraryReducer = (state = initialState, action) => {
                 }
             }
         case UPDATE_SUCCESS:
+
             const success = {
                 ...state,
                 flags: {
@@ -105,7 +120,7 @@ const libraryReducer = (state = initialState, action) => {
 
             for(let key of action.payload.lists) {
 
-                const sorted = sorter(action.payload.data[key], 'id')
+                const sorted = sorter(action.payload.data[key], 'id', 'int')
 
                 success[key] = {
                     ...state[key],
@@ -162,19 +177,38 @@ const libraryReducer = (state = initialState, action) => {
             }
         case SORT_DIRECTION_CHANGE:
 
-            const list = action.payload.list
-            const newDirection = state[list].options.activeSortDirection === 'asc' ? 'desc' : 'asc'
-            const reversed = reverser(state[list].list)
+            const dcList = action.payload.list
+            const newDirection = state[dcList].options.activeSortDirection === 'asc' ? 'desc' : 'asc'
+            const dcReversed = reverser(state[dcList].list)
 
             return {
                 ...state,
-                [list]: {
-                    ...state[list],
-                    list: reversed,
-                    idToIndex: getIdToIndex(reversed),
+                [dcList]: {
+                    ...state[dcList],
+                    list: dcReversed,
+                    idToIndex: getIdToIndex(dcReversed),
                     options: {
-                        ...state[list].options,
+                        ...state[dcList].options,
                         activeSortDirection: newDirection
+                    }
+                }
+            }
+        case SORT_FIELD_CHANGE:
+            const dfList = action.payload.list
+            const newField = action.payload.key
+            const fieldType = state[dfList].sortFields[newField].type
+            const dfSorted = sorter(state[dfList].list, newField, fieldType)
+
+            return {
+                ...state,
+                [dfList]: {
+                    ...state[dfList],
+                    list: dfSorted,
+                    idToIndex: getIdToIndex(dfSorted),
+                    options: {
+                        ...state[dfList].options,
+                        activeSortField: newField,
+                        activeSortDirection: 'asc'
                     }
                 }
             }

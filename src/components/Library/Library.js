@@ -1,75 +1,86 @@
 import React from "react";
 import Container from "../Container/Container";
 import List from "../List/List";
-import BookInline from "../BookInline/BookInline";
-import AuthorInline from "../AuthorInline/AuthorInline";
-import MemberInline from "../MemberInline/MemberInline";
 
 const Library = props => {
-    const {page, books, authors, members} = props
+    const {page, books, authors} = props
+    const listToWork = props[page].list
 
-    let list = []
-    let template
-    let elemClass
-    let keyField
+    let list = listToWork.map(item => {
 
-    if(page === 'books') {
-        template = BookInline
-        elemClass = "library__book"
-        keyField = 'id'
-        list = books.list.map(book => {
-            let author = "Loading..."
-            if(authors.list !== null) {
-                const a = authors.list[authors.idToIndex[book.authorId]]
-                author = `${a.firstName} ${a.lastName}`
-            }
-            return {
-                ...book,
-                author: author
-            }
-        })
-    }
+        let title, subTitle, info, subInfo, status, link
 
-    if(page === 'authors') {
-        template = AuthorInline
-        elemClass = "library__author"
-        keyField = 'id'
-        list = authors.list.map(author => {
-            let bookTitles = ["Loading..."]
-            if(books.list !== null) {
-                bookTitles = author.books.map(book => {
-                    return books.list[books.idToIndex[book.id]].title
-                })
-            }
-            return {
-                ...author,
-                bookTitles: bookTitles
-            }
-        })
-    }
+        switch (page) {
+            case "books":
 
-    if(page === 'members') {
-        template = MemberInline
-        elemClass = "library__member"
-        keyField = 'id'
-        list = members.list.map(member => {
-            let bookTitles = ["Loading..."]
-            if(books.list !== null) {
-                bookTitles = member.books.map(book => {
-                    return books.list[books.idToIndex[book.id]].title
-                })
-            }
-            return {
-                ...member,
-                bookTitles: bookTitles
-            }
-        })
-    }
+                subTitle = "Loading..."
+                if(authors.list !== null) {
+                    const {firstName, lastName} = authors.list[authors.idToIndex[item.authorId]]
+                    subTitle = `${firstName} ${lastName}`
+                }
+
+                title = item.title
+                info = item.info
+                subInfo = ''
+                status = item.userId === null ? "Available" : "Not available"
+                link = `/${page}/${item.id}`
+                break;
+            case "authors":
+
+                let authorBooks = ["Loading..."]
+                if(books.list !== null) {
+                    authorBooks = item.books.map(book => {
+                        return books.list[books.idToIndex[book.id]].title
+                    })
+                }
+
+                title = `${item.firstName} ${item.lastName}`
+                subTitle = new Date(item.birthday).toLocaleDateString()
+                info = item.info
+                subInfo = `Books: ${authorBooks.join(' | ')}`
+                status = ''
+                link = false
+                break;
+            case "members":
+
+                let memberBooks = ["Loading..."]
+                if(books.list !== null) {
+                    memberBooks = item.books.map(book => {
+                        return books.list[books.idToIndex[book.id]].title
+                    })
+                }
+
+                title = `${item.firstName} ${item.lastName}`
+                subTitle = `${item.email} | ${item.phone}`
+                info = ''
+                subInfo = `Books: ${memberBooks.length ? memberBooks.join(' | ') : "none"}`
+                status = ''
+                link = `/${page}/${item.id}`
+                break;
+            default:
+                title = ''
+                subTitle = ''
+                info = ''
+                subInfo = ''
+                status = ''
+                link = false
+        }
+
+        return {
+            key: item.id,
+            title: title,
+            subTitle: subTitle,
+            info: info,
+            subInfo: subInfo,
+            status: status,
+            link: link
+        }
+    })
 
     return (
         <Container.Item>
             <main className="library">
-                <List elemClass={elemClass} keyField={keyField} list={list} template={template}/>
+                <List list={list}/>
             </main>
         </Container.Item>
     )

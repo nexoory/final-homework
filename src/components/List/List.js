@@ -1,22 +1,23 @@
 import React from "react";
 import "./List.scss"
+import ListItem from "./__item/__item";
+import {Link} from "react-router-dom";
 
 const List = props => {
 
-    const Template = props.template
-    const keyField = props.keyField
-    const list = props.list
+    const {list} = props
 
-    const listClass = props.listClass ? props.listClass : ''
-    const elemClass = props.elemClass ? `list__item ${props.elemClass}` : 'list__item'
-
-    const elements = list.map(elem => {
-        return (
-            <Template key={elem[keyField]} customClass={elemClass} {...elem}/>
-        )
+    const items = list.map(item => {
+        const classes = 'list__item list-item'
+        const link = item.link
+        if(link) {
+            return <Link key={item.key} className={classes+' list__item_link'} to={link}><ListItem {...item}/></Link>
+        } else {
+            return <div key={item.key} className={classes}><ListItem {...item}/></div>
+        }
     })
 
-    return <div className={`list ${listClass}`}>{elements}</div>
+    return <div className={`list`}>{items}</div>
 }
 
 export default List

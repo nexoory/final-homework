@@ -13,7 +13,7 @@ const Header = props => {
             activeClassName='header__link_active'
             className="header__link"
             to={link.link}>
-            {link.title}
+            {link.name}
         </NavLink>
     ))
 

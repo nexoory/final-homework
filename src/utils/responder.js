@@ -1,18 +1,23 @@
 import axios from "axios"
 
-async function responder(lists) {
-    const server = 'http://192.168.99.100:5555'
-    const path = "/apiV1"
-    const listPath = {
-        books: "/book",
-        authors: "/author",
-        members: "/user"
+async function responder(toLoad) {
+    const server = 'http://192.168.99.100:5555/apiV1'
+    const paths = {
+        book: "/book",
+        author: "/author",
+        member: "/user"
     }
 
     const requests = []
-    for(let key of lists) {
-        if(listPath[key]) {
-            const url = server+path+listPath[key]
+    for(let load of toLoad) {
+
+        let type = load.type
+        let key = load.key ? load.key : load.type
+        let isSingle = !!load.id
+
+        if(paths[type]) {
+            let url = server+paths[type]
+            if (isSingle) {url += `/${load.id}`}
             requests.push({
                 key: key,
                 url: url,
